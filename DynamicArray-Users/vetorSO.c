@@ -29,6 +29,7 @@ int main() {
   printf("Nome na Posição 30: %s\n", vector_getNomes(&vector, 30));
   printf("Password na Posição 30: %s\n", vector_getPasswords(&vector, 30));
   printf("Saldo na Posição 30: %d\n", vector_getSaldos(&vector, 30));
+  puts("\n");
   printf("Nome na Posição 900: %s\n", vector_getNomes(&vector, 900));
   printf("Password na Posição 900: %s\n", vector_getPasswords(&vector, 900));
   printf("Saldo na Posição 900: %d\n", vector_getSaldos(&vector, 900));

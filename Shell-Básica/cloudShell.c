@@ -37,9 +37,10 @@ int main(int argc, char* argv[]){
 	char* cmd;
 	char buf[1000];
 	while(1){
-		write(1,"Shell $",8);
+		write(1,"cloudShell $ ",14);
 		readln(0,buf,1000);
 		cloudShell(buf);
+        if(buf[0]=='S' && buf[1]=='\0') break;
 	}
 
 	return 0;
