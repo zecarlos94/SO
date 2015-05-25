@@ -50,11 +50,11 @@ void login(GrowingArray ga){
   printf ("ESCREVA O SEU NOME DE UTILIZADOR\n");
   fgets(nm,100,stdin);
   corta=strlen(nm)-1;
-  if(nm[corta]=='\n') nm[corta]=='\0';
+  if(nm[corta]=='\n') nm[corta]='\0';
   printf ("ESCREVA A SUA PASSWORD\n");
   fgets(pass,100,stdin);
   corta=strlen(pass)-1;
-  if(pass[corta]=='\n') pass[corta]=='\0';
+  if(pass[corta]=='\n') pass[corta]='\0';
   for(i=0; i<ga->size; i++){
     Utilizador aux=ga->Elems[i];
     if(strcmp(aux->nome,nm) && strcmp(aux->password,pass)) {
@@ -80,11 +80,11 @@ void registar(GrowingArray ga){
   printf ("ESCREVA O SEU NOME DE UTILIZADOR\n");
   fgets(nm,100,stdin);
   corta=strlen(nm)-1;
-  if(nm[corta]=='\n') nm[corta]=='\0';
+  if(nm[corta]=='\n') nm[corta]='\0';
   printf ("ESCREVA A SUA PASSWORD\n");
   fgets(pass,100,stdin);
   corta=strlen(pass)-1;
-  if(pass[corta]=='\n') pass[corta]=='\0';
+  if(pass[corta]=='\n') pass[corta]='\0';
   Utilizador cp1 = malloc(sizeof(struct user));
   cp1->nome=nm;
   cp1->password=pass;
