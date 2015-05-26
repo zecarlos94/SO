@@ -34,6 +34,14 @@ void executa(){
 
 /*
 $ xeyes & -> permite executar comandos em background
+
+O cliente.c e um ficheiro com o pipe criado pela cloudshell que o abre e envia sinais por ele
+Na cloudshell.c tem a shell e cria um novo pipe com nome mkfifo("",0666)
+
+criar ficheiro com extensão .sh e fazer chmod 0777 nomeficheiro.sh
+e depois basta fazer o ./nomeficheiro.sh e ele executa tudo =>>script em bash
+
+unzip faz o unzip da pasta .zip
 */
 
 
