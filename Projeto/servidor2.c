@@ -33,6 +33,9 @@ int main()
    servidor_contabilidade = open(servcont, O_RDONLY);
    write(contabilidade_servidor, str, sizeof(str));
    perror("Envio para a contabilidade: "); 
+   int value;
+   read(servidor_contabilidade, &value, sizeof(int));
+   printf("Received: %d\n", value);
    read(servidor_contabilidade,str,sizeof(str));
    perror("Leitura da contabilidade: "); 
    printf("\n...resultado da contabilidade: %s\n",str);

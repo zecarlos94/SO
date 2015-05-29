@@ -33,13 +33,14 @@ int main()
    printf("Servidor Ligado.\n");
    while (1) {
     read(contabilidade_servidor, buffer, 128);
-    res=actualizaSaldo(ga,getpid());
     if (strcmp("exit",buffer)==0) {
         printf("Servidor Desligado.\n");
         break;
     }else if (strcmp("",buffer)!=0) {
         printf("Recebido: %s\n", buffer);
         printf("A enviar de volta a mensagem ao Servidor...\n");
+        int nread = actualizaSaldo(ga,getpid());
+        write(servidor_contabilidade, &nread, sizeof(int));
         write(servidor_contabilidade,buffer,128);
     }
     memset(buffer, 0, sizeof(buffer));
