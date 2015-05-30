@@ -1,11 +1,11 @@
 
 all: servidor cliente
 
-servidor: servidor.c myexec.c
-	gcc servidor.c myexec.c -o server 
+servidor: servidor.c myexec.c packets.c contabilidade2.c
+	gcc servidor2.c myexec.c packets.c contabilidade2.c -o server 
 
-cliente: cliente.c
-	gcc cliente.c -o client
+cliente: cliente.c packets.c
+	gcc cliente2.c packets.c -o client
 
 clean:
 	rm -f server client
