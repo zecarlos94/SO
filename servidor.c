@@ -8,8 +8,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define SIZE 1000
-
 typedef void (*sighandler_t)(int);
 
 clock_t start, stop;
@@ -24,41 +22,30 @@ void sigalrm_handler (int sig) {
   printf("Está aí alguém?\n");
 }
 
-char* cloudShell(char* cmd){
-  int n=0;char* a[SIZE];
+void cloudShell(char* cmd){
+  int n=0;char* a[1000];
   a[n]=strtok(cmd, " ");
   while(a[n]) a[++n]=strtok(NULL, " ");
   start=clock();
-  char* resultado = malloc(1024); // mensagem
-	
- 
-  int pd[2];
-  pipe(pd);
- 
-  fpid = fork();
+  signal(SIGCHLD, sigchld_handler);
+    fpid = fork();
   if (fpid == 0) 
   {  /*Filho*/
       printf("%d\n", getpid());
       if(!strcmp(a[0],"cd")){chdir(a[1]);}
     else
     {
-      dup2(pd[1],1);
-      close(pd[1]);
       execvp(a[0],a);
       _exit(4);
     }
-  } 
+    } 
     else {          /*Pai*/
-      close(pd[1]);
-/* Coloca o output do comando em resultado */
-      while (read(pd[0], resultado , 1024));
-      close(pd[0]);
-      stop=clock();
+      sleep(5);
+    stop=clock();
       printf("Pai acordou , %d\n", fpid);
       printf("%.10f segundos\n", (double)((stop-start)/CLOCKS_PER_SEC));
-  
-	return resultado;  
-  }
+      sleep(1);
+    }
 } 
 
 int main()
@@ -67,28 +54,24 @@ int main()
    char *cs = "/tmp/cs";
    int servidor_cliente;
    char *sc = "/tmp/sc";
-   char buffer[SIZE];
-   char* resultado;
+   char buffer[128];
    mkfifo(cs, 0666);
    mkfifo(sc, 0666);
    cliente_servidor = open(cs, O_RDONLY);
    servidor_cliente = open(sc, O_WRONLY);
    printf("Servidor Ligado.\n");
-   memset(buffer, 0, sizeof(buffer));
-   while(1){
-      memset(buffer, 0, sizeof(buffer));
-      read(cliente_servidor, buffer, SIZE);
-      //int memoria = atoi(buffer) * 1024;//bytes , 1char = 1byte
-      if (strcmp("",buffer)!=0) {
-        int memoria;
-        read(servidor_cliente, &memoria, sizeof(int));
-        printf("Memoria pedida %d bytes\n",memoria);
+   while (1) {
+    read(cliente_servidor, buffer, 128);
+    if (strcmp("exit",buffer)==0) {
+        printf("Servidor Desligado.\n");
+        break;
+    }else if (strcmp("",buffer)!=0) {
         printf("Recebido: %s\n", buffer);
-        resultado = cloudShell(buffer);
+        cloudShell(buffer);
         printf("A enviar de volta a mensagem ao cliente...\n");
-        write(servidor_cliente, resultado , 1024);
-      }
-      memset(buffer, 0, sizeof(buffer));
+        write(servidor_cliente,buffer,128);
+    }
+    memset(buffer, 0, sizeof(buffer));
    }
    close(cliente_servidor);
    close(servidor_cliente);
@@ -96,4 +79,3 @@ int main()
    unlink(sc);
    return 0;
 }
-

@@ -3,10 +3,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define SIZE 1000
 
 ssize_t readln(int file, char *buffer, size_t nbyte){ 
 	int i = 0; int n; 
@@ -24,21 +20,17 @@ int main()
    char *cs = "/tmp/cs";
    int servidor_cliente;
    char *sc = "/tmp/sc";
-   char str[SIZE];
+   char str[128];
    do{
-   memset(str, 0, sizeof(str));
    printf("Mensagem que pretende enviar: \n");
    /*scanf("%s", str); impede a leitura de comandos, por exemplo,ls -la separa em duas leituras resultando em 2 comandos diferentes*/
-   readln(0,str,SIZE);
-   int nread = atoi(str) * 1024;
+   readln(0,str,128);
    cliente_servidor = open(cs, O_WRONLY);
    servidor_cliente = open(sc, O_RDONLY);
    write(cliente_servidor, str, sizeof(str));
-   write(servidor_cliente, &nread, sizeof(int));
-   perror("Envio para o Servidor: \n"); 
+   perror("Envio para o Servidor: "); 
    read(servidor_cliente,str,sizeof(str));
-
-   perror("Leitura do Servidor: \n"); 
+   perror("Leitura do Servidor: "); 
    printf("\n...resultado do Servidor: %s\n",str);
    }while(strcmp(str,"terminar")!=0);
    close(cliente_servidor);
