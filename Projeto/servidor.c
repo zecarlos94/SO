@@ -65,26 +65,34 @@ int main()
    int servidor_cliente;
    char *sc = "/tmp/sc";
    char buffer[SIZE];
+   char buf[SIZE];
    char* resultado;
    mkfifo(cs, 0666);
    mkfifo(sc, 0666);
    cliente_servidor = open(cs, O_RDONLY);
    servidor_cliente = open(sc, O_WRONLY);
    printf("Servidor Ligado.\n");
+   memset(buf, 0, sizeof(buf));
    memset(buffer, 0, sizeof(buffer));
    while(1){
+      memset(buf, 0, sizeof(buf));
       memset(buffer, 0, sizeof(buffer));
+      read(cliente_servidor, buf, SIZE);
+      if (strcmp("",buf)!=0) {
+        int nread = atoi(buf) * 1024;
+        printf("Memoria pedida %d bytes\n",nread);
+        //printf("Memoria pedida %s bytes\n",buf);
+      }
+
       read(cliente_servidor, buffer, SIZE);
       //int memoria = atoi(buffer) * 1024;//bytes , 1char = 1byte
       if (strcmp("",buffer)!=0) {
-        int memoria;
-        read(servidor_cliente, &memoria, sizeof(int));
-        printf("Memoria pedida %d bytes\n",memoria);
         printf("Recebido: %s\n", buffer);
         resultado = cloudShell(buffer);
         printf("A enviar de volta a mensagem ao cliente...\n");
         write(servidor_cliente, resultado , 1024);
       }
+      memset(buf, 0, sizeof(buf));
       memset(buffer, 0, sizeof(buffer));
    }
    close(cliente_servidor);

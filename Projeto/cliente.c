@@ -25,16 +25,23 @@ int main()
    int servidor_cliente;
    char *sc = "/tmp/sc";
    char str[SIZE];
+   char mem[SIZE];
    do{
    memset(str, 0, sizeof(str));
+   memset(mem, 0, sizeof(mem));
+   
+   printf("Memória necessária: \n");
+   readln(0,mem,SIZE);
+
    printf("Mensagem que pretende enviar: \n");
-   /*scanf("%s", str); impede a leitura de comandos, por exemplo,ls -la separa em duas leituras resultando em 2 comandos diferentes*/
    readln(0,str,SIZE);
-   int nread = atoi(str) * 1024;
+   
    cliente_servidor = open(cs, O_WRONLY);
    servidor_cliente = open(sc, O_RDONLY);
+   
+   write(cliente_servidor, mem, sizeof(mem));
    write(cliente_servidor, str, sizeof(str));
-   write(servidor_cliente, &nread, sizeof(int));
+   
    perror("Envio para o Servidor: \n"); 
    read(servidor_cliente,str,sizeof(str));
 
