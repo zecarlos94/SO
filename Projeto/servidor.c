@@ -8,6 +8,8 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "myexec.h"
+
 #define SIZE 1000
 
 typedef void (*sighandler_t)(int);
@@ -26,12 +28,10 @@ void sigalrm_handler (int sig) {
 
 char* cloudShell(char* cmd){
   int n=0;char* a[SIZE];
-  a[n]=strtok(cmd, " ");
-  while(a[n]) a[++n]=strtok(NULL, " ");
+  
   start=clock();
   char* resultado = malloc(1024); // mensagem
 	
- 
   int pd[2];
   pipe(pd);
  
@@ -39,14 +39,11 @@ char* cloudShell(char* cmd){
   if (fpid == 0) 
   {  /*Filho*/
       printf("%d\n", getpid());
-      if(!strcmp(a[0],"cd")){chdir(a[1]);}
-    else
-    {
       dup2(pd[1],1);
       close(pd[1]);
-      execvp(a[0],a);
+      myexec(cmd);
       _exit(4);
-    }
+ //   }
   } 
     else {          /*Pai*/
       close(pd[1]);
@@ -57,7 +54,7 @@ char* cloudShell(char* cmd){
       printf("Pai acordou , %d\n", fpid);
       printf("%.10f segundos\n", (double)((stop-start)/CLOCKS_PER_SEC));
   
-	return resultado;  
+      return resultado;  
   }
 } 
 

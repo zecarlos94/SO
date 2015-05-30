@@ -1,20 +1,11 @@
-CFLAGS= -ansi -Wall -pedantic -O2 
-OBJS = servidor.o
-OBJ = cliente.o
 
-all: server client
+all: servidor cliente
 
-server: $(OBJS)
-	gcc $(OBJS) -o server
-
-client: $(OBJ)
-	gcc $(OBJS) -o client
-
-servidor: servidor.c
-	gcc $(CFLAGS) -c servidor.c  
+servidor: servidor.c myexec.c
+	gcc servidor.c myexec.c -o server 
 
 cliente: cliente.c
-	gcc $(CFLAGS) -c cliente.c
+	gcc cliente.c -o client
 
 clean:
-	rm -f *.o
+	rm -f server client

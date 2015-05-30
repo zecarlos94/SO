@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "myexec.h"
+
 char** tokenBars(char* comando)
 {
     int i=0;
@@ -51,16 +53,12 @@ char*** tokenSpaces(char** v )
 
 int loop_pipe (char*** cmd);
 
-void runPipe(char* comando){ 
+void myexec(char* comando){ 
     char** div1=tokenBars(comando); 
     char*** final = tokenSpaces(div1); 
-    loop_pipe(final);
-}
-
-int main(){
-    char exemplo[50] = "ls -l | wc ";
-    runPipe(exemplo);  
-    return 0;
+    
+    if(!strcmp(final[0][0],"cd")) chdir(final[0][1]);
+	else loop_pipe(final);
 }
 
 int loop_pipe (char*** cmd){
