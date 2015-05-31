@@ -170,7 +170,7 @@ char* concat(char *s1, char *s2)
 }
 */
 
-
+/*
 int main()
 {
 	char data[1000] = "#1000;20;ls -l##25;2;ls -l | wc ##9;666;Funciona#"; 
@@ -180,8 +180,9 @@ int main()
 	printf("Pid = %d, length = %d, data = %s\n",p[1].pid,p[1].length,p[1].data);	
 	printf("Pid = %d, length = %d, data = %s\n",p[2].pid,p[2].length,p[2].data);	
 	printf("Pid = %d, length = %d, data = %s\n",p[3].pid,p[3].length,p[3].data);	
+	return 0;
 }
-
+*/
 /*
 int main()
 {

@@ -8,7 +8,7 @@
 
 #include "packets.h"
 
-#define SIZE 1000
+#define SIZE 10000
 
 ssize_t readln(int file, char *buffer, size_t nbyte){ 
 	int i = 0; int n; 
@@ -26,8 +26,8 @@ int main()
    char *cs = "/tmp/server";
    int servidor_cliente;
    char sc[20] = "/tmp/";
-   char str[SIZE];
-   char mem[SIZE];
+   char BUFF1[SIZE];
+   char BUFF2[SIZE];
    
    char pidS[20];
    sprintf(pidS,"%d",getpid());
@@ -35,53 +35,67 @@ int main()
 
 	printf("%s\n",sc);
 
-   memset(str, 0, sizeof(str));
-   memset(mem, 0, sizeof(mem));
+   memset(BUFF1, 0, SIZE);
+   memset(BUFF2, 0, SIZE);
    
    printf("Memória que deseja alocar: \n");
-   readln(0,mem,SIZE);
+   readln(0,BUFF1,SIZE);
 
-   Packet packetM = initPacket(getpid(),atoi(mem),NULL);
+   Packet packetM = initPacket(getpid(),atoi(BUFF1),NULL);
 
    cliente_servidor = open(cs, O_WRONLY);
 
    writePacket(cliente_servidor,packetM);
 
-   printf("Introduza os comandos que pretender: \n");
-   puts("Escreva 'terminar' para sair");
-   memset(str, 0, sizeof(str));
+   
+   memset(BUFF1, 0, SIZE );
 
 
 
    while(1)
 	{
    	  
-	  readln(0,str,SIZE);
+   	  printf("Introduza os comandos que pretender: \n");
+  	  puts("Escreva 'terminar' para sair");
+	 
+           readln(0,BUFF1,SIZE);
 
-   	  if(strcmp(str,"terminar")==0) break;	
+   	  if(strcmp(BUFF1,"terminar")==0) break;	
 
+	  if (!(strcmp(BUFF1,"")==0 || strcmp(BUFF1,"\n") == 0))
 
-
-  	  Packet packetC = initPacket(getpid(),sizeof(str),str);
+	  {
+  	  Packet packetC = initPacket(getpid(),sizeof(BUFF1),BUFF1);
+	  
+	  
 	  
 	  writePacket(cliente_servidor,packetC);
+	  perror("Write:");
 
-   	  servidor_cliente = open(sc, O_RDONLY);
-	  
 
-  	  
+	  servidor_cliente = open(sc, O_RDONLY);
+	  perror("Open read channel");   	 
+
+ 
    	  printf("\n...resultado do Servidor...\n");
 	  
-	  read(servidor_cliente,str,sizeof(str));
+	  
+	  read(servidor_cliente,BUFF2,SIZE);
+	  
 	  perror("Read:");   	  
 
-	  printf("%s\n",str);
+	  
+	  printf("%s\n",BUFF2);
 
-   	  close(servidor_cliente);
-	  memset(str, 0, sizeof(str));
-   	}
+	  }
+
+	  memset(BUFF1, 0, SIZE );
+	  memset(BUFF2, 0, SIZE );
+   	  
+	}
    
    
+   close(servidor_cliente);
    close(cliente_servidor);
    
    return 0;
