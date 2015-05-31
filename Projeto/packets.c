@@ -2,6 +2,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <unistd.h>
+
 
 #include "packets.h"
 
@@ -171,7 +173,7 @@ char* concat(char *s1, char *s2)
 /*
 int main()
 {
-	char data[1000] = "#1000;20;AI FUNCIONA##25;2;CARALHO##9;666;OLE#"; 
+	char data[1000] = "#1000;20;ls -l##25;2;ls -l | wc ##9;666;Funciona#"; 
 	Packet* p = aggregatePackets(data);
 	printf("Pid = %d, length = %d, data = %s\n",p[0].pid,p[0].length,p[0].data);	
 	printf("Pid = %d, length = %d, data = %s\n",p[1].pid,p[1].length,p[1].data);	
@@ -187,8 +189,6 @@ int main()
 
         r = readPacket(0,p);
 	
-        printf("r = %d\n",r);
-
 	if(p)
 	for(i=0 ;isValidPacket(p[i]) ; i++)
 		printPacket(p[i]);
