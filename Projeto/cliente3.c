@@ -33,12 +33,10 @@ int main()
    sprintf(pidS,"%d",getpid());
    strcat(sc,pidS);// acrescenta o numero do pid a /tmp/
 
-	printf("%s\n",sc);
-
    memset(BUFF1, 0, SIZE);
    memset(BUFF2, 0, SIZE);
    
-   printf("Memória que deseja alocar: \n");
+   printf("Memória que deseja comprar em Mb: \n");
    readln(0,BUFF1,SIZE);
 
    Packet packetM = initPacket(getpid(),atoi(BUFF1),NULL);
@@ -49,8 +47,6 @@ int main()
 
    
    memset(BUFF1, 0, SIZE );
-
-
 
    while(1)
 	{

@@ -67,8 +67,6 @@ int main()
 
       start=clock();
 
-      perror("Open:");
-	
 	/* Se o pacote foi utilizado para mandar apenas um int,
 	significa que o utilizador comprou memória, logo cria-se uma conta */
       if ( isPacketInt(packets[i]) ) 
@@ -93,17 +91,28 @@ int main()
 	char* sc = cliente->pipe; 
 	
         servidor_cliente = open(sc, O_WRONLY);
+        perror("Open:");
+	
 
 	// O limite do cliente excedeu 
-	if(cliente->memoria_comprada < cliente->memoria_utilizada || cliente->saldo <= 0)
+	if(cliente->memoria_comprada < cliente->memoria_utilizada)
 	{
-		char resultado[100] = "Ultrapassou o seu saldo ou memoria utilizada";
+		char resultado[100] = "Limite de memoria ultrapassada";
 	
 		write(servidor_cliente, resultado , SIZE);
 		perror("Write:");
 	}
+	else if (cliente->saldo <= 0)
+	{
+		char resultado[100] = "Limite de saldo ultrapassado";
+		write(servidor_cliente, resultado , SIZE);
+		perror("Write:");
+
+	}
 	else{
    		char* resultado;
+	
+		int memoria=0;
 
 		printPacket(packets[i]);
 	
@@ -113,7 +122,11 @@ int main()
    	
 		perror("Write:");
 
-		cliente->memoria_utilizada-= (int)strlen(resultado);      	
+		memoria = (int)strlen(resultado);
+
+		cliente->memoria_utilizada+= memoria;      	
+
+		printf("Memoria descontada:%dBytes\n",memoria);
 
 		free(resultado);
 
@@ -121,6 +134,7 @@ int main()
      
 	} 
       }
+// Final do tratamento do pacote
 	int* processos = pidsContabilidade(cont);
 
 	double cpu_usage = pidStats(processos);
@@ -156,7 +170,6 @@ char* cloudShell(char* cmd){
   fpid = fork();
   if (fpid == 0) 
   {  /*Filho*/
-      printf("%d\n", getpid());
       dup2(pd[1],1);
       close(pd[1]);
       myexec(cmd);
