@@ -41,6 +41,24 @@ Cliente dadosCliente(Contabilidade c,int pid) {
 	return cliente;
 }
 
+/*
 	
+int main()
+{
+	int i;
+	Contabilidade ct = initContabilidade(10000);
+	criaConta(ct,1234,30);
+	criaConta(ct,5678,12);
+	criaConta(ct,9012,45);
+	criaConta(ct,4920,26);
 
-	
+	for(i=0; i<ct->size; i++){
+		Cliente aux=ct->clientes[i];
+		printf("BEM VINDO %d !!!\n", aux->pid);
+		printf("O seu saldo é: %d\n", aux->saldo);
+		printf("A memória utilizada foi: %d\n", aux->memoria_utilizada);
+		printf("A memória comprada foi:%d\n", aux->memoria_comprada);
+    }
+	return 0;
+}
+*/	
