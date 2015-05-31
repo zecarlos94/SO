@@ -55,7 +55,8 @@ int main()
 
    while(1)
 	{
-   	  readln(0,str,SIZE);
+   	  
+	  readln(0,str,SIZE);
 
    	  if(strcmp(str,"terminar")==0) break;	
 
@@ -74,7 +75,8 @@ int main()
 	  read(servidor_cliente,str,sizeof(str));
 	  perror("Read:");   	  
 
-	
+	  printf("%s",str);
+
    	  close(servidor_cliente);
 	  memset(str, 0, sizeof(str));
    	}

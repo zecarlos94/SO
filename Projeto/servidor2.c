@@ -71,8 +71,9 @@ int main()
    Contabilidade contabilidade = initContabilidade(10);  
  
    mkfifo(cs, 0666); // De leitura
-   cliente_servidor = open(cs, O_RDONLY);
    
+   cliente_servidor = open(cs, O_RDONLY);
+
    printf("Servidor Ligado.\n");
    
 
@@ -113,16 +114,17 @@ int main()
       {
 
 	
+        servidor_cliente = open(sc, O_WRONLY);
 	
 	printPacket(packets[i]);
-
+	
+	fflush(stdout);
 
 
 	/* Verificar aqui memoria e saldo do utilizador com funçoes da Contabilidade*/
         resultado = cloudShell( packets[i].data );
         
 	
-        servidor_cliente = open(sc, O_WRONLY);
       //  write( 1 , resultado , 1024);
       
         write(servidor_cliente, resultado , 1024);
