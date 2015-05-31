@@ -101,24 +101,27 @@ PidData collectCPU( int* pids, int N)
 	return r;
 }
 
+int tamanho(int* pids);
 // recebe os pids que quer analisar e devolve a %cpu utilizada ordenada
-double* pidStats(int* pids,int N)
+double pidStats(int* pids)
 {
 	int i,j;
 	PidData intel;
-	double* cpus = malloc(N*sizeof(double));
+	double cpu_usage = 0;
+	int N = tamanho(pids);
 
 	intel = collectCPU(pids,N);
 
-	for(j = 0; j < N ;j++) 
-	  for(i = 0; i < intel->size; i++)
-	    {
-		if(pids[j] == intel->data[i].pid)
-		{
-		  cpus[j] = intel->data[i].cpu; break;
-		}
-  	    }
-	return cpus;
+	for(i = 0; i < intel->size; i++) cpu_usage+= intel->data[i].cpu; 
+  	    
+	return cpu_usage;
+}
+
+int tamanho(int* pids)
+{
+	int i;
+	for(i = 0;pids[i]!=-1;i++);
+	return i;
 }
 
 int existe(int* pids,int N,int checkPid)

@@ -33,8 +33,6 @@ int main()
    sprintf(pidS,"%d",getpid());
    strcat(sc,pidS);// acrescenta o numero do pid a /tmp/
 
-	printf("%s\n",sc);
-
    memset(BUFF1, 0, SIZE);
    memset(BUFF2, 0, SIZE);
    

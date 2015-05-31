@@ -44,6 +44,17 @@ Cliente dadosCliente(Contabilidade c,int pid) {
 	return cliente;
 }
 
+int* pidsContabilidade(Contabilidade c){
+	int i;
+	int* pids = (int*) malloc((2+c->size)*sizeof(int));
+	for(i=0;i < c->size;i++){
+		pids[i]=c->clientes[i]->pid;
+	}
+	pids[i]= getpid();
+	pids[i+1] = -1;
+	return pids;
+
+}
 
 
 

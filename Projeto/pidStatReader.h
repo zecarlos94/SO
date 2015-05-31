@@ -3,6 +3,6 @@
 
 #define PIDSTATREADER_H
 
-double* pidStats(int* pids,int N);
+double pidStats(int* pids);
 
 #endif

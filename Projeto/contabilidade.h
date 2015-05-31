@@ -28,6 +28,7 @@ void criaConta(Contabilidade c,int pid,int memoria_comprada,char* pipe);
 
 Cliente dadosCliente(Contabilidade c,int pid);
 
+int* pidsContabilidade(Contabilidade c);
 
 
 #endif

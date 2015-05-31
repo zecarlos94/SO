@@ -11,7 +11,7 @@
 #include "myexec.h"
 #include "packets.h"
 #include "contabilidade.h"
-//#include "pidStatReader.h"
+#include "pidStatReader.h"
 
 #define SIZE 10000
 
@@ -27,7 +27,7 @@ void sigint_handler (int sig) {
 
    int j;
     
-   puts("Unlinking pipes before shutdown");
+   printf("\n\nUnlinking pipes before shutdown\n\n");
    
    for(j=0;j < cont->size;j++)
 	unlink(cont->clientes[j]->pipe);
@@ -65,6 +65,7 @@ int main()
       
       int pid = packets[i].pid;
 
+      start=clock();
 
       perror("Open:");
 	
@@ -120,6 +121,19 @@ int main()
      
 	} 
       }
+	int* processos = pidsContabilidade(cont);
+
+	double cpu_usage = pidStats(processos);
+
+	free(processos);
+
+      	stop=clock();
+
+// inclui a utilizaçao do cpu por parte do processo pai
+	printf("Server %f%% CPU\n",cpu_usage);
+      
+	printf("Duração:%.10f segundos\n", (double)((stop-start)/CLOCKS_PER_SEC));
+
       //final do tratamento do pacote
 	printf("Cliente: %d atendido\n\n",pid);
      }
@@ -134,7 +148,6 @@ int main()
 char* cloudShell(char* cmd){
   int n=0;char* a[SIZE];
   
-  start=clock();
   char* resultado = malloc(SIZE); // mensagem
 	
   int pd[2],fpid;
@@ -154,17 +167,7 @@ char* cloudShell(char* cmd){
 /* Coloca o output do comando em resultado */
       while (read(pd[0], resultado , SIZE));
       close(pd[0]);
-      stop=clock();
- /*     
-      int pids = getpid(); 
-      double* cpu = pidStats(&pids,1);
-*
-	printf("%f%% cpu filho\n",cpu[1]);
-	printf("%f%% cpu pai\n",cpu[0]);
-*
-      printf("%f%% cpu utilizado\n",cpu[0]);	
-*/
-      printf("Duração:%.10f segundos\n", (double)((stop-start)/CLOCKS_PER_SEC));
+      
   
       return resultado;  
   }

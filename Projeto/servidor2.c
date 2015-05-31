@@ -80,8 +80,8 @@ int main()
 
    while(1){
 
-      readPacket(cliente_servidor,packets);      
- 
+	int temp=      readPacket(cliente_servidor,packets);      
+ 	printf("%d\n",temp);
       for(i = 0 ; isValidPacket(packets[i]) ; i++){
       
       int pid = packets[i].pid;
