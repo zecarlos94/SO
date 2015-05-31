@@ -113,25 +113,20 @@ int main()
      else if ( isPacketData(packets[i])) 
       {
 
-	
-        servidor_cliente = open(sc, O_WRONLY);
-	
 	printPacket(packets[i]);
 	
-	fflush(stdout);
-
+        servidor_cliente = open(sc, O_WRONLY);
 
 	/* Verificar aqui memoria e saldo do utilizador com funçoes da Contabilidade*/
         resultado = cloudShell( packets[i].data );
         
 	
-      //  write( 1 , resultado , 1024);
-      
         write(servidor_cliente, resultado , 1024);
    	
 	perror("Write:");
       
 
+        close(servidor_cliente);
         close(servidor_cliente);
       }
       

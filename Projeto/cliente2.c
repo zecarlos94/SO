@@ -75,7 +75,7 @@ int main()
 	  read(servidor_cliente,str,sizeof(str));
 	  perror("Read:");   	  
 
-	  printf("%s",str);
+	  printf("%s\n",str);
 
    	  close(servidor_cliente);
 	  memset(str, 0, sizeof(str));
