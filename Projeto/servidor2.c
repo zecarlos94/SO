@@ -66,7 +66,6 @@ int main()
    int cliente_servidor,i;
    char *cs = "/tmp/server";
    int servidor_cliente;
-   char sc[20] = "/tmp/";
    char* resultado;
 
    Contabilidade contabilidade = initContabilidade(10);  
@@ -82,15 +81,23 @@ int main()
    while(1){
  
       readPacket(cliente_servidor,packets);      
+      perror("Read:");
  
       for(i = 0 ; isValidPacket(packets[i]) ; i++){
       
+      char sc[20] = "/tmp/";
       int pid = packets[i].pid;
    /* Deduz o nome do pipe do utilizador */
       char pidS[20];  
       sprintf(pidS,"%d",pid);     
       strcat(sc,pidS);// acrescenta o numero do pid a /tmp/
 
+
+      mkfifo(sc, 0666);// De escrita
+	
+
+
+	printf("%s\n",sc);
 
 	/* Se o pacote foi utilizado para mandar apenas um int,
 	significa que o utilizador comprou memória, logo cria-se uma conta */
@@ -102,25 +109,31 @@ int main()
       } 
 	
  
-     if ( isPacketData(packets[i])) 
+     else if ( isPacketData(packets[i])) 
       {
-	puts("Recebeu um comando");
 
+	
+	
 	printPacket(packets[i]);
 
-        mkfifo(sc, 0666);// De escrita
- 	servidor_cliente = open(sc, O_WRONLY);
+
 
 	/* Verificar aqui memoria e saldo do utilizador com funçoes da Contabilidade*/
-        printf("Recebido: %s\n", packets[i].data);
         resultado = cloudShell( packets[i].data );
-        printf("A enviar de volta a mensagem ao cliente...\n");
+        
+	
+        servidor_cliente = open(sc, O_WRONLY);
+      //  write( 1 , resultado , 1024);
       
         write(servidor_cliente, resultado , 1024);
-   	close(servidor_cliente);
+   	
+	perror("Write:");
+      
+
+        close(servidor_cliente);
       }
       
-      unlink(sc);
+      	unlink(sc);
 
       }
       cleanPackets(packets,10);

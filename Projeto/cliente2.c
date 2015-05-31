@@ -33,6 +33,7 @@ int main()
    sprintf(pidS,"%d",getpid());
    strcat(sc,pidS);// acrescenta o numero do pid a /tmp/
 
+	printf("%s\n",sc);
 
    memset(str, 0, sizeof(str));
    memset(mem, 0, sizeof(mem));
@@ -43,12 +44,15 @@ int main()
    Packet packetM = initPacket(getpid(),atoi(mem),NULL);
 
    cliente_servidor = open(cs, O_WRONLY);
+
    writePacket(cliente_servidor,packetM);
-   close(cliente_servidor);
 
    printf("Introduza os comandos que pretender: \n");
    puts("Escreva 'terminar' para sair");
    memset(str, 0, sizeof(str));
+
+
+
    while(1)
 	{
    	  readln(0,str,SIZE);
@@ -56,24 +60,27 @@ int main()
    	  if(strcmp(str,"terminar")==0) break;	
 
 
-   	  servidor_cliente = open(sc, O_RDONLY);
 
   	  Packet packetC = initPacket(getpid(),sizeof(str),str);
-   	  cliente_servidor = open(cs, O_WRONLY);
+	  
 	  writePacket(cliente_servidor,packetC);
-   	  close(cliente_servidor);
 
-	  perror("Envio para o Servidor: \n");
+   	  servidor_cliente = open(sc, O_RDONLY);
 	  
 
-  	  perror("Leitura do Servidor: \n"); 
+  	  
    	  printf("\n...resultado do Servidor...\n");
 	  
 	  read(servidor_cliente,str,sizeof(str));
-   	  close(servidor_cliente);
+	  perror("Read:");   	  
+
 	
+   	  close(servidor_cliente);
 	  memset(str, 0, sizeof(str));
    	}
+   
+   
+   close(cliente_servidor);
    
    return 0;
 
