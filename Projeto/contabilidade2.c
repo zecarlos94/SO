@@ -4,7 +4,7 @@
 #include <string.h>
 #include "contabilidade.h"
 
-#define SALDO 20
+#define SALDO 10 // Saldo inicial
 
 
 Contabilidade initContabilidade(int max_size) {
@@ -24,14 +24,17 @@ void insertContabilidade(Contabilidade a, Cliente o) {
 	a->size+=1;
 }
 
-void criaConta(Contabilidade cont,int pid,int memoria_comprada) {
+
+void criaConta(Contabilidade cont,int pid,int memoria_comprada,char* pipe) {
 	Cliente c = malloc(sizeof(cliente));
 	c->pid = pid;
 	c->saldo = SALDO;
 	c->memoria_utilizada = 0;
 	c->memoria_comprada = memoria_comprada;
+	strcpy(c->pipe,pipe);
 	insertContabilidade(cont,c); 
 }
+
 
 Cliente dadosCliente(Contabilidade c,int pid) {
 	int i;
@@ -40,6 +43,9 @@ Cliente dadosCliente(Contabilidade c,int pid) {
 		if( c->clientes[i]->pid == pid) cliente = c->clientes[i];
 	return cliente;
 }
+
+
+
 
 /*
 	

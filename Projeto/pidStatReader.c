@@ -101,22 +101,24 @@ PidData collectCPU( int* pids, int N)
 	return r;
 }
 
-// recebe os pids que quer analisar
-int main(int argc, char* argv[])
+// recebe os pids que quer analisar e devolve a %cpu utilizada ordenada
+double* pidStats(int* pids,int N)
 {
-	int N = argc - 1;
-	int i;
+	int i,j;
 	PidData intel;
-	int* pids = malloc(N);
-	for(i=0 ; i < N ; i++)
-		pids[i] = atoi(argv[i+1]);
+	double* cpus = malloc(N*sizeof(double));
 
 	intel = collectCPU(pids,N);
-	// Print para verificar resultados
-	for(i = 0; i < intel->size; i++)
-		printf(" O processo:%d usou %f%%cpu\n",intel->data[i].pid,intel->data[i].cpu);
-		
-	return 0;
+
+	for(j = 0; j < N ;j++) 
+	  for(i = 0; i < intel->size; i++)
+	    {
+		if(pids[j] == intel->data[i].pid)
+		{
+		  cpus[j] = intel->data[i].cpu; break;
+		}
+  	    }
+	return cpus;
 }
 
 int existe(int* pids,int N,int checkPid)

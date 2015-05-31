@@ -7,6 +7,7 @@ typedef struct cliente {
         int saldo;
 	int memoria_utilizada;
 	int memoria_comprada;
+	char pipe[20];
 }cliente;
 
 typedef cliente* Cliente;
@@ -23,7 +24,7 @@ Contabilidade initContabilidade(int size);
 
 void insertContabilidade(Contabilidade a, Cliente c);
 
-void criaConta(Contabilidade c,int pid,int memoria_comprada);
+void criaConta(Contabilidade c,int pid,int memoria_comprada,char* pipe);
 
 Cliente dadosCliente(Contabilidade c,int pid);
 
