@@ -11,7 +11,6 @@
 #include "myexec.h"
 #include "packets.h"
 #include "contabilidade.h"
-#include "pidStatReader.h"
 
 #define SIZE 10000
 
@@ -61,7 +60,7 @@ int main()
 
       readPacket(cliente_servidor,packets);      
  
-      for(i = 0 ; isValidPacket(packets[i]) ; i++){
+     for(i = 0 ; isValidPacket(packets[i]) ; i++){
       
       int pid = packets[i].pid;
 
@@ -97,21 +96,14 @@ int main()
 	// O limite do cliente excedeu 
 	if(cliente->memoria_comprada < cliente->memoria_utilizada)
 	{
-//		char resultado[100] = "Limite de memoria ultrapassada\n";
 	
-//		write(servidor_cliente, resultado , SIZE);
 		printf("Cliente sem memoria\n");
 		kill(pid,SIGUSR1);
-//		perror("Write:");
 	}
 	else if (cliente->saldo <= 0)
 	{
-//		char resultado[100] = "Limite de saldo ultrapassado\n";
-//		write(servidor_cliente, resultado , SIZE);
-//		perror("Write:");
 		printf("Cliente sem saldo\n");
 		kill(pid,SIGUSR2);
-
 	}
 	else{
    		char* resultado;
@@ -132,27 +124,20 @@ int main()
 
 		printf("Memoria descontada:%dBytes\n",memoria);
 
+
 		free(resultado);
 
 		cliente->saldo--;   	
      
 	} 
       }
-// Final do tratamento do pacote
-	int* processos = pidsContabilidade(cont);
-
-	double cpu_usage = pidStats(processos);
-
-	free(processos);
+	// Final do tratamento do pacote
 
       	stop=clock();
-
-// inclui a utilizaçao do cpu por parte do processo pai
-	printf("Server %f%% CPU\n",cpu_usage);
       
 	printf("Duração:%.10f segundos\n", (double)((stop-start)/CLOCKS_PER_SEC));
-
-      //final do tratamento do pacote
+      
+	//final do tratamento do pacote
 	printf("Cliente: %d atendido\n\n",pid);
      }
    // Final do tratamento de todos os pacotes, read mais
@@ -164,9 +149,11 @@ int main()
 }
 
 char* cloudShell(char* cmd){
-  int n=0;char* a[SIZE];
+  int n=0;
   
-  char* resultado = malloc(SIZE); // mensagem
+  char* resultado = malloc(SIZE*sizeof(char)); // mensagem
+
+  memset(resultado,0,SIZE);
 	
   int pd[2],fpid;
   pipe(pd);
@@ -185,7 +172,6 @@ char* cloudShell(char* cmd){
       while (read(pd[0], resultado , SIZE));
       close(pd[0]);
       
-  
       return resultado;  
   }
 }
