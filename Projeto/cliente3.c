@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 #include "packets.h"
 
@@ -20,6 +21,18 @@ ssize_t readln(int file, char *buffer, size_t nbyte){
     else return -1; 
 }
 
+void saldoEsgotado(int s)
+{
+	printf("\nEsgotou o seu saldo\n");
+	exit(1);
+}
+
+void memoriaEsgotada(int s)
+{
+	printf("\nEsgotou a sua memoria\n");
+	exit(1);
+}
+
 int main()
 {
    int cliente_servidor,i;
@@ -28,7 +41,10 @@ int main()
    char sc[20] = "/tmp/";
    char BUFF1[SIZE];
    char BUFF2[SIZE];
-   
+
+   signal(SIGUSR1,memoriaEsgotada);
+   signal(SIGUSR2,saldoEsgotado);
+
    char pidS[20];
    sprintf(pidS,"%d",getpid());
    strcat(sc,pidS);// acrescenta o numero do pid a /tmp/

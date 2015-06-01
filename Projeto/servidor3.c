@@ -97,16 +97,20 @@ int main()
 	// O limite do cliente excedeu 
 	if(cliente->memoria_comprada < cliente->memoria_utilizada)
 	{
-		char resultado[100] = "Limite de memoria ultrapassada";
+//		char resultado[100] = "Limite de memoria ultrapassada\n";
 	
-		write(servidor_cliente, resultado , SIZE);
-		perror("Write:");
+//		write(servidor_cliente, resultado , SIZE);
+		printf("Cliente sem memoria\n");
+		kill(pid,SIGUSR1);
+//		perror("Write:");
 	}
 	else if (cliente->saldo <= 0)
 	{
-		char resultado[100] = "Limite de saldo ultrapassado";
-		write(servidor_cliente, resultado , SIZE);
-		perror("Write:");
+//		char resultado[100] = "Limite de saldo ultrapassado\n";
+//		write(servidor_cliente, resultado , SIZE);
+//		perror("Write:");
+		printf("Cliente sem saldo\n");
+		kill(pid,SIGUSR2);
 
 	}
 	else{
