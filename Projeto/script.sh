@@ -1,3 +1,3 @@
 unzip SO.zip
-cd /SO/Projeto
+cd SO/
 make
