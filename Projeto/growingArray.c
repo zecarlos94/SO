@@ -2,52 +2,45 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "growingArray.h"
+#include "contabilidade.h"
+
+#define SALDO 20
 
 
-GrowingArray initGrowingArray(int max_size) {
-	GrowingArray novo=malloc(sizeof(struct growingarray));
-	novo->size=0;
-	novo->max_size=max_size;
-	novo->Elems = calloc(max_size,sizeof(Clientes));
+Contabilidade initContabilidade(int max_size) {
+	Contabilidade novo = malloc(sizeof(struct contabilidade));
+	novo->size = 0;
+	novo->max_size = max_size;
+	novo->clientes = calloc(max_size,sizeof(Clientes));
 	return novo;
 }
 
-void insertGrowingArray(GrowingArray a, Objeto o) {
+void insertContabilidade(Contabilidade a, Cliente o) {
 	if(a->size==a->max_size) {
 		a->max_size*=1.5; 
-		a->Elems=realloc(a->Elems,sizeof(void*) *  a->max_size);
+		a->clientes =realloc(a->clientes, sizeof(void*) *  a->max_size);
 	}	
-	a->Elems[a->size]=o;
+	a->Clientes[a->size]=o;
 	a->size+=1;
 }
 
+void criaConta(Contabilidade cont,int pid,int memoria_comprada) {
+	Cliente c = malloc(sizeof(cliente));
+	c->pid = pid;
+	c->saldo = SALDO;
+	c->memoria_utilizada = 0;
+	c->memoria_comprada = memoria_comprada;
+	insertContabilidade(cont,c); 
+}
+
+Cliente dadosCliente(Contabilidade c,int pid) {
+	int i;
+	Cliente cliente=NULL;
+	for(i=0;i < Contabilidade->size;i++)
+		if( contabilidade->clientes[i]->pid == pid) cliente = contabilidade->clientes[i]
+	return cliente;
+}
+
 	
-void ordenaArrayAux(int **arrayAux, int length) {
-	qSort(arrayAux, 0, length-1);
-}
 
-
-void qSort(int **arrayAux, int left, int right) {
-	int i=left, j=right, x=arrayAux[(left+right)/2][0], y[2];
-	while(i<=j) {
-		while(arrayAux[i][0]>x && i<right) {
-			i++;
-		}
-		while(arrayAux[j][0]<x && j>left) {
-			j--;
-		}
-		if(i<=j) {
-			y[0]=arrayAux[i][0];
-			y[1]=arrayAux[i][1];
-			arrayAux[i][0]=arrayAux[j][0];
-			arrayAux[i][1]=arrayAux[j][1];
-			arrayAux[j][0]=y[0];
-			arrayAux[j][1]=y[1];
-			i++; j--;
-		}
-	}
-	if(j>left) qSort(arrayAux, left, j);
-	if(i<right) qSort(arrayAux, i, right);
-}
 	

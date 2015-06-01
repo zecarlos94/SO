@@ -2,29 +2,31 @@
 
 #define GROWINGARRAY_H
 
-typedef struct client {
-        int pid_number;
+typedef struct cliente {
+        int pid;
         int saldo;
-}Clients;
+	int memoria_utilizada;
+	int memoria_comprada;
+}cliente;
 
-typedef struct client *Clientes;
+typedef cliente* Cliente;
 
-typedef void* Objeto;
-
-typedef struct growingarray{
-        Objeto* Elems;
+typedef struct contabilidade{
+        Cliente* clientes;
         int size;
         int max_size;
-} growingarray;
+} contabilidade;
 
-typedef growingarray* GrowingArray;
+typedef contabilidade* Contabilidade;
 
-GrowingArray initGrowingArray(int max_size);
+Contabilidade initContabilidade(int size);
 
-void insertGrowingArray(GrowingArray a, Objeto o);
+void insertContabilidade(Contabilidade a, Cliente c);
 
-void ordenaArrayAux(int **arrayAux, int length);
+void criaConta(Contabilidade c,int pid,int memoria_comprada);
 
-void qSort(int **arrayAux, int left, int right);
+Cliente dadosCliente(Contabilidade c,int pid);
+
+
 
 #endif
